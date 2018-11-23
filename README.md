@@ -56,8 +56,9 @@ Details of each section are below. Todo items are tagged according to priority (
 - (2) Chip bar (Filter 1) is displayed if there are any filters selected
     - Clicking on the 'x' button removes the filter, and updates the search results
 - Clicking on the Search text input focuses the text input. As user enters the search text, search results will be updated when the user stops typing (i.e if user pauses for 500 ms)
-![cart page design](./screen_design/catalog.png)
 - Clicking on the search results calls the Add to Cart Dialog
+
+![cart page design](./screen_design/catalog.png?s=250)
 
 #### Catalog Page - Search and Filter Menu
 (2) This page is shown on clicking the action button on the Catalog AppBar. 
@@ -66,13 +67,14 @@ Details of each section are below. Todo items are tagged according to priority (
 - Clicking on Clear Filters clears all text inputs and unchecks all checkboxes
 - Clicking on Ok dimisses the menu, and updates the search results on the Catalog Page
 
-![cart page design](./screen_design/catalog-filters.png)
+![cart page design](./screen_design/catalog-filters.png?s=250)
 
 #### Catalog Page - Add to Cart Dialog
 (1) This dialog is displayed on clicking any of the search results on the Catalog Page - Main
 - Clicking on Cancel dismisses the dialog
 - Clicking on Add adds the item to the Cart and removes the item from the search results
-![cart page design](./screen_design/catalog-add-to-cart.png)
+
+![cart page design](./screen_design/catalog-add-to-cart.png?s=250)
 
 ### Cart page
 
@@ -89,11 +91,12 @@ Details of each section are below. Todo items are tagged according to priority (
 - Clicking on the 'x' button deletes the item
 - Clicking on Submit calls the Submit dialog
 
-![cart page design](screen_design/cart.png)
+![cart page design](screen_design/cart.png?s=250)
 
 #### Cart Page - Submit Dialog
 (1) This dialog is diplayed on clicking the Submit button on Cart Page - Main.
 - Patient's User ID must be entered in the text field
 - Clicking on Cancel dismisses the dialog
 - Clicking on Submit submits the collection and the user ID to the webhook
-![cart page design](screen_design/cart-submit.png)
+
+![cart page design](screen_design/cart-submit.png?s=250)
