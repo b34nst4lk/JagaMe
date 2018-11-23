@@ -36,6 +36,8 @@ Details of each section are below. Todo items are tagged according to priority (
 
 ### Catalog page
 
+#### Functions
+
 - Applcation landing page
 - AppBar includes the title "Catalog" and filter button. 
     - (2) Clicking on the filter button slides out the right drawer for users to choose additional filters
@@ -48,12 +50,50 @@ Details of each section are below. Todo items are tagged according to priority (
         - (3) Note: Ideally, I would like the user to still see the card, but grayed out. This would allow the user to make changes directly on the catalog screen. But pushed to lower priority due to complexity.
     - (3) Clicking on the card will bring up a dialog box that provides the description of the product
 
-![cart page design](screen_design/catalog.png)
+#### Catalog Page - Main
+(1) This page is displayed on launch or clicking the home button in the bottom tabs
+- Clicking on ... on the AppBar dsplays the Search and Filter Menu
+- (2) Chip bar (Filter 1) is displayed if there are any filters selected
+    - Clicking on the 'x' button removes the filter, and updates the search results
+- Clicking on the Search text input focuses the text input. As user enters the search text, search results will be updated when the user stops typing (i.e if user pauses for 500 ms)
+![cart page design](./screen_design/catalog.png)
+- Clicking on the search results calls the Add to Cart Dialog
+
+#### Catalog Page - Search and Filter Menu
+(2) This page is shown on clicking the action button on the Catalog AppBar. 
+- Min and Max Price text boxes, if filled, must be greater than 0, and Max Price must be greater than Min Price
+- Clicking on the right arrow on the Search and Filter AppBar dismisses the menu
+- Clicking on Clear Filters clears all text inputs and unchecks all checkboxes
+- Clicking on Ok dimisses the menu, and updates the search results on the Catalog Page
+
+![cart page design](./screen_design/catalog-filters.png)
+
+#### Catalog Page - Add to Cart Dialog
+(1) This dialog is displayed on clicking any of the search results on the Catalog Page - Main
+- Clicking on Cancel dismisses the dialog
+- Clicking on Add adds the item to the Cart and removes the item from the search results
+![cart page design](./screen_design/catalog-add-to-cart.png)
 
 ### Cart page
+
+#### Functions
 
 - Accessed by clicking on the cart tab button on the bottom tabs
 - (1) List of selected products. Can reuse component in Catalog page. User should be able to change quantity and remove items.
 - (1) Total price.
+- (1) Submit selected items with the patient ID
+
+#### Cart Page - Main
+(1) This page is accessed by clicking on the the cart button on the bottom tabs
+- Quantity of each item can be edited for each item
+- Clicking on the 'x' button deletes the item
+- Clicking on Submit calls the Submit dialog
 
 ![cart page design](screen_design/cart.png)
+
+#### Cart Page - Submit Dialog
+(1) This dialog is diplayed on clicking the Submit button on Cart Page - Main.
+- Patient's User ID must be entered in the text field
+- Clicking on Cancel dismisses the dialog
+- Clicking on Submit submits the collection and the user ID to the webhook
+![cart page design](screen_design/cart-submit.png)
