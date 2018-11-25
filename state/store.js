@@ -12,14 +12,12 @@ initialState = {
     searchResults: sampleData, // list of item ids 
     addToCartDialogIsVisible: false,
     selectedItem: null,
+    selectedItemQuantity: 1,
     cart: {}, // map of item ids and quantity
     submitDialogIsVisible: false,
 }
-console.log(initialState)
 
 export const reducer = (state=initialState, action) => {
-    console.log(action)
-    console.log("initialState: "+ state)
     newState = Object.assign({}, state)
     switch (action.type) {
         case a.INSERT_SEARCH_RESULTS:
@@ -30,16 +28,24 @@ export const reducer = (state=initialState, action) => {
 
         case a.SHOW_ADD_TO_CART_DIALOG:
             newState.addToCartDialogIsVisible = true
-            selectedItem = action.item
+            newState.selectedItem = action.selectedItem
+            console.log(newState)
+            return newState
+
+        case a.UPDATE_QUANTITY:
+            newState.selectedItemQuantity=action.quantity
             return newState
 
         case a.DISMISS_ADD_TO_CART_DIALOG:
             newState.addToCartDialogIsVisible = false
+            newState.selectedItem = null
+            newState.selectedItemQuantity = 1
             return newState
 
         case a.ADD_TO_CART:
             newState.cart[action.item.id.toString()] = action.quantity
             newState.selectedItem = null
+            newState.selectedItemQuantity = 1
             newState.addToCartDialogIsVisible = false
             return newState
 
@@ -51,5 +57,4 @@ export const reducer = (state=initialState, action) => {
     }
 }
 
-console.log(reducer)
 export const store = createStore(reducer)
