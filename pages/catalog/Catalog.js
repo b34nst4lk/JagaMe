@@ -47,7 +47,7 @@ export class Catalog extends Component {
                     renderItem={({item}) => 
                         <ProductCard 
                             name={item.name}
-                            price={item.price}
+                            price={item.price.toFixed(2)}
                             img={item.images[0].src}
                         />
                     }
