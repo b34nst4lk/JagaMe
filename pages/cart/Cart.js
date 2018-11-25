@@ -9,7 +9,8 @@ export class Cart extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            products: sampleData
+            products: sampleData,
+            totalPrice: 0
         }
     }
 
@@ -37,6 +38,12 @@ export class Cart extends Component {
                         </ProductCard>
                     }
                 />
+                <Appbar>
+                    <Appbar.Content 
+                        title={'Total Price: $' + this.state.totalPrice.toFixed(2)}
+                    />
+                    <Button>Submit</Button>
+                </Appbar>
             </View>
         )
     }
