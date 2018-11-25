@@ -10,7 +10,7 @@ export class Cart extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            products: sampleData,
+            products: [],
             totalPrice: 0,
             dialogIsVisible: false
         }

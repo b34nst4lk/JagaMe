@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Catalog } from './catalog/Catalog'
+import Catalog from './catalog/Catalog'
 import { Cart } from './cart/Cart'
 import { BottomNavigation } from 'react-native-paper'
 

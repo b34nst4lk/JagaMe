@@ -1,32 +1,17 @@
 import React, { Component } from 'react'
 import { View, FlatList, WebView } from 'react-native'
 import { Appbar, Paragraph, Portal } from 'react-native-paper';
+import { connect } from 'react-redux'
+
 import { TextInputWithIcon } from './SearchInput'
 import { ProductCard } from '../ProductCard'
 import { AddToCartDialog } from './AddToCartDialog'
 
 import { productEndpoint } from '../../config'
 import { sampleData } from '../../sampleData'
+import * as a from '../../state/action'
 
-export class Catalog extends Component {
-    constructor(props) {
-        super(props)
-        regex = /(<([^>]+)>)/ig
-        for (var item of sampleData) {
-            item.description = item.description.replace(regex, '')
-            item.short_description = item.short_description.replace(regex, '')
-        }
-        this.state = {
-            products: sampleData,
-            dialogIsVisible: false,
-            selectedItem: null,
-            item: null,
-        }
-
-        this.showDialog = this.showDialog.bind(this)
-        this.hideDialog = this.hideDialog.bind(this)
-    }
-
+class Catalog extends Component {
     // componentDidMount() {
     //     this.getProducts()        
     // }
@@ -37,21 +22,21 @@ export class Catalog extends Component {
     //     this.setState({products: sampleData})
     // }
 
-    showDialog(item) {
-        this.setState({
-            dialogIsVisible: true,
-            selectedItem: item
-        })
-    }
+    // showDialog(item) {
+    //     this.setState({
+    //         dialogIsVisible: true,
+    //         selectedItem: item
+    //     })
+    // }
 
-    hideDialog() {
-        this.setState({
-            dialogIsVisible: false,
-            item: null
-        })
-    }
-
+    // hideDialog() {
+    //     this.setState({
+    //         dialogIsVisible: false,
+    //         item: null
+    //     })
+    // }
     render() {
+        console.log(this.props)
         return (
             <View style={{flex: 1}}>
                 <Appbar.Header>
@@ -63,23 +48,23 @@ export class Catalog extends Component {
                     />
                 </Appbar.Header>
                 <Portal>
-                    <AddToCartDialog 
-                        visible={this.state.dialogIsVisible}
-                        item={this.state.selectedItem}
+                    {/* <AddToCartDialog 
+                        visible={this.props.dialogIsVisible}
+                        item={this.props.selectedItem}
                         onDismiss={this.hideDialog}
-                    />
+                    /> */}
                 </Portal>
                 <TextInputWithIcon
                     placeholder="E.g. Wheelchairs"
                     icon="search"
                 />
                 <FlatList 
-                    data={this.state.products}
+                    data={this.props.products}
                     keyExtractor={(item, index) => item.id.toString()}
                     renderItem={({item}) => 
                         <ProductCard 
                             item={item}
-                            onPress={() => this.showDialog(item)}
+                            // onPress={() => this.showDialog(item)}
                         >
                             <Paragraph>{item.short_description}</Paragraph>
                         </ProductCard>
@@ -89,3 +74,23 @@ export class Catalog extends Component {
         ) 
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+        products: state.products,
+        searchResults: state.searchResults,
+        dialogIsVisible: state.addToCartDialogIsVisible,
+        selectedItem: state.selectedItem
+    }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addToCart: () => dispatch(a.ADD_TO_CART),
+        showDialog: () => dispatch(a.SHOW_ADD_TO_CART_DIALOG),
+        hideDialog: () => dispatch(a.DISMISS_ADD_TO_CART_DIALOG)
+    }
+}
+
+export default connect(mapStateToProps)(Catalog)

@@ -1,4 +1,4 @@
-export const sampleData = 
+let data = 
 [
   {
     id: 2163,
@@ -2258,3 +2258,11 @@ export const sampleData =
     }
   }
 ]
+
+regex = /(<([^>]+)>)/ig
+for (var item of data) {
+    item.description = item.description.replace(regex, '')
+    item.short_description = item.short_description.replace(regex, '')
+}
+
+export const sampleData = data

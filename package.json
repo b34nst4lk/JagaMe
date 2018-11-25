@@ -12,7 +12,9 @@
     "react-native-paper": "^2.2.8",
     "react-native-vector-icons": "^6.1.0",
     "react-navigation": "^3.0.0",
-    "react-navigation-material-bottom-tabs": "^1.0.0"
+    "react-navigation-material-bottom-tabs": "^1.0.0",
+    "react-redux": "^5.1.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
