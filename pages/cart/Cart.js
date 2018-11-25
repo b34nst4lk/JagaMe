@@ -27,11 +27,13 @@ export class Cart extends Component {
                     keyExtractor={(item, index) => item.id.toString()}
                     renderItem={({item}) => 
                         <ProductCard 
-                            name={item.name}
-                            price={item.price}
-                            img={item.images[0].src}
+                            item={item}
+                            onPress={null}
                         >
-                            <TextInput placeholder="Quantity" style={{backgroundColor: 'white'}}/>
+                            <TextInput 
+                                placeholder='Quantity' 
+                                keyboardType="number-pad"
+                            />
                             <Card.Actions style={{justifyContent: 'flex-end'}}>
                                 <Button>Delete</Button>
                             </Card.Actions>

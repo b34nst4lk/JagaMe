@@ -1,13 +1,14 @@
 import React from 'react'
-import { Card, Title, Subheading } from 'react-native-paper'
+import { Card, Subheading, Title } from 'react-native-paper'
 
 export function ProductCard(props) {
+    let item = props.item
     return (
-       <Card style={{flex: 1}}>
-            <Card.Cover source={{uri: props.img}}/>
+       <Card style={{flex: 1}} onPress={props.onPress}>
+            <Card.Cover source={{uri: item.images[0].src}}/>
             <Card.Content>
-                <Title>{props.name}</Title>
-                <Subheading>{stringToDollars(props.price)}</Subheading>
+                <Title>{item.name}</Title>
+                <Subheading>{stringToDollars(item.price)}</Subheading>
                 {props.children}
             </Card.Content>
         </Card>
