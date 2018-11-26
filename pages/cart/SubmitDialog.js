@@ -15,11 +15,17 @@ function SubmitDialog(props) {
                 <TextInput 
                     placeholder="Patient's User ID" 
                     value={props.patientId}
+                    onChangeText={(text) => props.onPatientIdChange(text)}
                 />
             </Dialog.Content>
             <Dialog.Actions>            
                 <Button onPress={() => props.onDismiss()}>Cancel</Button>
-                <Button>Submit</Button>
+                <Button 
+                    onPress={() => {}} 
+                    disabled={!props.submitIsEnabled}
+                >
+                    Submit
+                </Button>
             </Dialog.Actions>
         </Dialog>
     )
@@ -29,6 +35,7 @@ const mapStateToProps = (state) => {
     return {
     isVisible: state.submitDialogIsVisible,
         patientId: state.patientId,
+        submitIsEnabled: state.submitDialogButtonIsEnabled
     }
 }
 
@@ -38,6 +45,12 @@ const mapDispatchToProps = (dispatch) => {
         onDismiss: () => {
             dispatch({
                 type: a.DISMISS_SUBMIT_DIALOG
+            })
+        },
+        onPatientIdChange: (patientId) => {
+            dispatch({
+                type: a.UPDATE_PATIENT_ID,
+                patientId: patientId
             })
         }
     }
