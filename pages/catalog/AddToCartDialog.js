@@ -51,7 +51,8 @@ mapDispatchToProps = (dispatch) => {
         onSubmit: (item, quantity) => dispatch({
             type:a.ADD_TO_CART,
             item: item,
-            quantity: quantity
+            quantity: quantity,
+            price: parseFloat(item.price)
         })
     }
 }

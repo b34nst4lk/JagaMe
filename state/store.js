@@ -13,7 +13,7 @@ initialState = {
     addToCartDialogIsVisible: false,
     selectedItem: null,
     selectedItemQuantity: 1,
-    cart: {}, // map of item ids and quantity
+    cart: new Map(), // map of item ids and quantity
     submitDialogIsVisible: false,
 }
 
@@ -29,7 +29,6 @@ export const reducer = (state=initialState, action) => {
         case a.SHOW_ADD_TO_CART_DIALOG:
             newState.addToCartDialogIsVisible = true
             newState.selectedItem = action.selectedItem
-            console.log(newState)
             return newState
 
         case a.UPDATE_QUANTITY:
@@ -43,7 +42,7 @@ export const reducer = (state=initialState, action) => {
             return newState
 
         case a.ADD_TO_CART:
-            newState.cart[action.item.id.toString()] = action.quantity
+            newState.cart[action.item.id] = {quantity: action.quantity, price: action.price, item: action.item}
             newState.selectedItem = null
             newState.selectedItemQuantity = 1
             newState.addToCartDialogIsVisible = false

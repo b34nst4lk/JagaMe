@@ -1,25 +1,12 @@
 import React, { Component } from 'react'
 import { FlatList, View } from 'react-native'
 import { Appbar, Button, Card, TextInput, Portal } from 'react-native-paper'
+import { connect } from 'react-redux'
+
 import { ProductCard } from '../ProductCard'
 import { SubmitDialog } from './SubmitDialog'
 
-import { sampleData } from '../../sampleData'
-
-export class Cart extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            products: [],
-            totalPrice: 0,
-            dialogIsVisible: false
-        }
-
-        this.dismissDialog = this.dismissDialog.bind(this)
-        this.showDialog = this.showDialog.bind(this)
-        this.submit = this.submit.bind(this)
-    }
-
+class Cart extends Component {
     dismissDialog() {
         this.setState({
             dialogIsVisible:false
@@ -37,6 +24,7 @@ export class Cart extends Component {
     }
 
     render() {
+        console.log(this.props.cart.values())
         return (
             <View style={{flex: 1}}>
                 <Appbar>
@@ -46,31 +34,35 @@ export class Cart extends Component {
                 </Appbar>
                 <Portal>
                     <SubmitDialog 
-                        visible={this.state.dialogIsVisible}
+                        visible={this.props.dialogIsVisible}
                         onDismiss={this.dismissDialog}
                     />
                 </Portal>
                 <FlatList 
-                    data={this.state.products}
-                    keyExtractor={(item, index) => item.id.toString()}
-                    renderItem={({item}) => 
-                        <ProductCard 
-                            item={item}
-                            onPress={null}
-                        >
-                            <TextInput 
-                                placeholder='Quantity' 
-                                keyboardType="number-pad"
-                            />
-                            <Card.Actions style={{justifyContent: 'flex-end'}}>
-                                <Button>Delete</Button>
-                            </Card.Actions>
-                        </ProductCard>
+                    data={Array.from(this.props.cart)}
+                    keyExtractor={(item, index) => item.item.id.toString()}
+                    renderItem={({item}) => {
+                        console.log(item)
+                        return (
+                            <ProductCard 
+                                item={item.item}
+                                onPress={null}
+                            >
+                                <TextInput 
+                                    placeholder='Quantity' 
+                                    keyboardType="number-pad"
+                                    value={item.quantity.toString()}
+                                />
+                                <Card.Actions style={{justifyContent: 'flex-end'}}>
+                                    <Button>Delete</Button>
+                                </Card.Actions>
+                            </ProductCard>
+                        )}
                     }
                 />
                 <Appbar>
                     <Appbar.Content 
-                        title={'Total Price: $' + this.state.totalPrice.toFixed(2)}
+                        title={'Total Price: $' + this.props.totalPrice}
                     />
                     <Button onPress={() => this.showDialog()}>Submit</Button>
                 </Appbar>
@@ -78,3 +70,30 @@ export class Cart extends Component {
         )
     }
 }
+
+const calculateTotalPrice = (cart) => {
+    totalPrice = 0
+    for (const [id, item] of Object.entries(cart)) {
+        totalPrice += item.quantity * item.price
+    }
+    return totalPrice
+}
+
+const convertCartMapToArray = (cart) => {
+    array = new Array()
+    for (const [id, item] of Object.entries(cart)) {
+        array.push(item)
+    }
+    return array
+}
+
+
+const mapStateToProps = (state) => {
+    return {
+        cart: convertCartMapToArray(state.cart),
+        dialogIsVisible: state.submitDialogIsVisible,
+        totalPrice: calculateTotalPrice(state.cart).toFixed(2)
+    }
+}
+
+export default connect(mapStateToProps)(Cart)
