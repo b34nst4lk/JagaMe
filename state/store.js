@@ -15,6 +15,7 @@ initialState = {
     selectedItemQuantity: 1,
     cart: new Map(), // map of item ids and quantity
     submitDialogIsVisible: false,
+    submitButtonIsEnabled: false,
 }
 
 export const reducer = (state=initialState, action) => {
@@ -31,7 +32,7 @@ export const reducer = (state=initialState, action) => {
             newState.selectedItem = action.selectedItem
             return newState
 
-        case a.UPDATE_QUANTITY:
+        case a.UPDATE_DIALOG_QUANTITY:
             newState.selectedItemQuantity=action.quantity
             return newState
 
@@ -42,13 +43,27 @@ export const reducer = (state=initialState, action) => {
             return newState
 
         case a.ADD_TO_CART:
-            newState.cart[action.item.id] = {quantity: action.quantity, price: action.price, item: action.item}
+            newState.cart.set(action.item.id, {quantity: action.quantity, price: action.price, item: action.item})
             newState.selectedItem = null
             newState.selectedItemQuantity = 1
             newState.addToCartDialogIsVisible = false
+            newState.submitButtonIsEnabled = true
             return newState
 
+        case a.SHOW_SUBMIT_DIALOG:
+            newState.submitDialogIsVisible = true
+            return newState
+
+        case a.DISMISS_SUBMIT_DIALOG:
+            newState.submitDialogIsVisible = false
+            return newState
+
+        case a.UPDATE_ITEM_QUANTITY:
+            newState.cart[action.id].quantity = action.quantity
+            return newState
+            
         case a.REMOVE_FROM_CART:
+            if (newState.cart.size === 0) newState.submitButtonIsEnabled = false
             return newState
 
         default:

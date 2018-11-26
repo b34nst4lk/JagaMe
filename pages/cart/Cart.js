@@ -1,79 +1,66 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { FlatList, View } from 'react-native'
 import { Appbar, Button, Card, TextInput, Portal } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import { ProductCard } from '../ProductCard'
 import { SubmitDialog } from './SubmitDialog'
+import * as a from '../../state/action'
 
-class Cart extends Component {
-    dismissDialog() {
-        this.setState({
-            dialogIsVisible:false
-        })
-    }
-
-    showDialog() {
-        this.setState({
-            dialogIsVisible: true
-        })
-    }
-
-    submit() {
-
-    }
-
-    render() {
-        console.log(this.props.cart.values())
-        return (
-            <View style={{flex: 1}}>
-                <Appbar>
-                    <Appbar.Content 
-                        title="Cart"
-                    />
-                </Appbar>
-                <Portal>
-                    <SubmitDialog 
-                        visible={this.props.dialogIsVisible}
-                        onDismiss={this.dismissDialog}
-                    />
-                </Portal>
-                <FlatList 
-                    data={Array.from(this.props.cart)}
-                    keyExtractor={(item, index) => item.item.id.toString()}
-                    renderItem={({item}) => {
-                        console.log(item)
-                        return (
-                            <ProductCard 
-                                item={item.item}
-                                onPress={null}
-                            >
-                                <TextInput 
-                                    placeholder='Quantity' 
-                                    keyboardType="number-pad"
-                                    value={item.quantity.toString()}
-                                />
-                                <Card.Actions style={{justifyContent: 'flex-end'}}>
-                                    <Button>Delete</Button>
-                                </Card.Actions>
-                            </ProductCard>
-                        )}
-                    }
+function Cart(props) {
+    return (
+        <View style={{flex: 1}}>
+            <Appbar>
+                <Appbar.Content 
+                    title="Cart"
                 />
-                <Appbar>
-                    <Appbar.Content 
-                        title={'Total Price: $' + this.props.totalPrice}
-                    />
-                    <Button onPress={() => this.showDialog()}>Submit</Button>
-                </Appbar>
-            </View>
-        )
-    }
+            </Appbar>
+            <Portal>
+                <SubmitDialog 
+                    visible={props.dialogIsVisible}
+                    onDismiss={props.dismissDialog}
+                />
+            </Portal>
+            <FlatList 
+                data={Array.from(props.cart)}
+                keyExtractor={(item, index) => item.item.id.toString()}
+                renderItem={({item}) => {
+                    return (
+                        <ProductCard 
+                            item={item.item}
+                            onPress={null}
+                        >
+                            <TextInput 
+                                placeholder='Quantity' 
+                                keyboardType="number-pad"
+                                value={item.quantity.toString()}
+                                onChangeText={(text) => props.onUpdateQuantity(item.item.id, parseInt(text) || 0)}
+                            />
+                            <Card.Actions style={{justifyContent: 'flex-end'}}>
+                                <Button onPress={() => props.removeFromCart(item.item.id)}>Delete</Button>
+                            </Card.Actions>
+                        </ProductCard>
+                    )}
+                }
+            />
+            <Appbar>
+                <Appbar.Content 
+                    title={'Total Price: $' + props.totalPrice}
+                />
+                <Button 
+                    onPress={() => props.showDialog()}
+                    disabled={!props.submitIsEnabled}
+                >
+                    Submit
+                </Button>
+            </Appbar>
+        </View>
+    )
 }
 
 const calculateTotalPrice = (cart) => {
     totalPrice = 0
-    for (const [id, item] of Object.entries(cart)) {
+    for (const [id, item] of cart.entries()) {
         totalPrice += item.quantity * item.price
     }
     return totalPrice
@@ -81,19 +68,48 @@ const calculateTotalPrice = (cart) => {
 
 const convertCartMapToArray = (cart) => {
     array = new Array()
-    for (const [id, item] of Object.entries(cart)) {
+    for (const [id, item] of cart.entries()) {
         array.push(item)
     }
     return array
 }
 
-
 const mapStateToProps = (state) => {
     return {
         cart: convertCartMapToArray(state.cart),
         dialogIsVisible: state.submitDialogIsVisible,
-        totalPrice: calculateTotalPrice(state.cart).toFixed(2)
+        totalPrice: calculateTotalPrice(state.cart).toFixed(2),
+        submitIsEnabled: state.submitButtonIsEnabled,
     }
 }
 
-export default connect(mapStateToProps)(Cart)
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onUpdateQuantity: (itemId, quantity) => {
+            dispatch({
+                type: a.UPDATE_ITEM_QUANTITY,
+                id: itemId,
+                quantity: quantity
+            })
+        },
+        showDialog: () => {
+            dispatch({
+                type: a.SHOW_SUBMIT_DIALOG,
+            })
+        },
+        dismissDialog: () => {
+            dispatch({
+                type: a.DISMISS_SUBMIT_DIALOG,
+            })
+        },
+        removeFromCart: (itemId) => {
+            dispatch({
+                type: a.REMOVE_FROM_CART,
+                id: itemId
+            })
+        }
+        
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart)

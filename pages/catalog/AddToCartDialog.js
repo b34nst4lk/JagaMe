@@ -45,7 +45,7 @@ mapDispatchToProps = (dispatch) => {
             type: a.DISMISS_ADD_TO_CART_DIALOG
         }),
         onUpdateQuantity: (quantity) => dispatch({
-            type: a.UPDATE_QUANTITY,
+            type: a.UPDATE_DIALOG_QUANTITY,
             quantity: quantity
         }),
         onSubmit: (item, quantity) => dispatch({
