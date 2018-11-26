@@ -63,6 +63,7 @@ export const reducer = (state=initialState, action) => {
             return newState
             
         case a.REMOVE_FROM_CART:
+            newState.cart.delete(action.id)
             if (newState.cart.size === 0) newState.submitButtonIsEnabled = false
             return newState
 
