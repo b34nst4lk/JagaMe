@@ -22,7 +22,7 @@ The outstanding items are sorted by priority. Given the amount of time left, I'm
 Below are the screenshots of the completed screens
 
 **Catalog**
-![catalog page screenshot](./page_design/catalog_ss.png)!
+![catalog page screenshot](./page_design/catalog_ss.png)
 
 **Catalog - Add To Cart**
 ![catalog add to cart screenshot](./page_design/catalog-add-to-cart_ss.png)
