@@ -16,6 +16,7 @@ initialState = {
     cart: new Map(), // map of item ids and quantity
     submitDialogIsVisible: false,
     submitButtonIsEnabled: false,
+    patientId: '',
 }
 
 export const reducer = (state=initialState, action) => {
@@ -51,7 +52,12 @@ export const reducer = (state=initialState, action) => {
             return newState
 
         case a.SHOW_SUBMIT_DIALOG:
+            newState.patientId = ''
             newState.submitDialogIsVisible = true
+            return newState
+
+        case a.UPDATE_PATIENT_ID:
+            newState.patientId = action.patientId
             return newState
 
         case a.DISMISS_SUBMIT_DIALOG:

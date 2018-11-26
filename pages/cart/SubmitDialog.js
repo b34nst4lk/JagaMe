@@ -1,15 +1,21 @@
 import React from 'react'
 import { Button, Dialog, TextInput } from 'react-native-paper'
+import { connect } from 'react-redux'
 
-export function SubmitDialog(props) {
+import * as a from '../../state/action'
+
+function SubmitDialog(props) {
     return (
         <Dialog
-            visible={props.visible}
+            visible={props.isVisible}
             onDismiss={() => props.onDismiss()}
         >
             <Dialog.Title>Submit for follow up</Dialog.Title>
             <Dialog.Content>
-                <TextInput placeholder="Patient's User ID"></TextInput>
+                <TextInput 
+                    placeholder="Patient's User ID" 
+                    value={props.patientId}
+                />
             </Dialog.Content>
             <Dialog.Actions>            
                 <Button onPress={() => props.onDismiss()}>Cancel</Button>
@@ -18,3 +24,22 @@ export function SubmitDialog(props) {
         </Dialog>
     )
 }
+
+const mapStateToProps = (state) => {
+    return {
+    isVisible: state.submitDialogIsVisible,
+        patientId: state.patientId,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onDismiss: () => {
+            dispatch({
+                type: a.DISMISS_SUBMIT_DIALOG
+            })
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitDialog)

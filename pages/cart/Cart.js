@@ -4,7 +4,7 @@ import { Appbar, Button, Card, TextInput, Portal } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import { ProductCard } from '../ProductCard'
-import { SubmitDialog } from './SubmitDialog'
+import SubmitDialog from './SubmitDialog'
 import * as a from '../../state/action'
 
 function Cart(props) {
@@ -16,10 +16,7 @@ function Cart(props) {
                 />
             </Appbar>
             <Portal>
-                <SubmitDialog 
-                    visible={props.dialogIsVisible}
-                    onDismiss={props.dismissDialog}
-                />
+                <SubmitDialog />
             </Portal>
             <FlatList 
                 data={Array.from(props.cart)}
@@ -77,7 +74,6 @@ const convertCartMapToArray = (cart) => {
 const mapStateToProps = (state) => {
     return {
         cart: convertCartMapToArray(state.cart),
-        dialogIsVisible: state.submitDialogIsVisible,
         totalPrice: calculateTotalPrice(state.cart).toFixed(2),
         submitIsEnabled: state.submitButtonIsEnabled,
     }
@@ -95,11 +91,6 @@ const mapDispatchToProps = (dispatch) => {
         showDialog: () => {
             dispatch({
                 type: a.SHOW_SUBMIT_DIALOG,
-            })
-        },
-        dismissDialog: () => {
-            dispatch({
-                type: a.DISMISS_SUBMIT_DIALOG,
             })
         },
         removeFromCart: (itemId) => {
