@@ -65,7 +65,15 @@ export const reducer = (state=initialState, action) => {
             return newState
 
         case a.UPDATE_ITEM_QUANTITY:
-            newState.cart[action.id].quantity = action.quantity
+            newState.cart.get(action.id).quantity = action.quantity
+            newState.submitButtonIsEnabled = true
+            for (const [id, item] of newState.cart.entries()) {
+                console.log(item.quantity)
+                if (item.quantity === 0 || item.quantity === "") {
+                    newState.submitButtonIsEnabled = false
+                    break
+                }
+            }
             return newState
             
         case a.REMOVE_FROM_CART:

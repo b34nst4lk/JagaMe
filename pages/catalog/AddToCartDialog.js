@@ -19,13 +19,18 @@ function AddToCartDialog(props) {
                 <TextInput 
                     placeholder='Quantity' 
                     keyboardType="number-pad"
-                    onChangeText={(text) => props.onUpdateQuantity(text)}
+                    onChangeText={(text) => props.onUpdateQuantity(parseInt(text))}
                     value={props.quantity.toString()}
                 />
             </Dialog.Content>
             <Dialog.Actions>
                 <Button onPress={() => props.onDismiss()}>Cancel</Button>
-                <Button onPress={() => props.onSubmit(props.item, props.quantity)}>Add to Cart</Button>
+                <Button 
+                    onPress={() => props.onSubmit(props.item, props.quantity)}
+                    disabled={!props.addToCartIsEnabled}
+                >
+                    Add to Cart
+                </Button>
             </Dialog.Actions>
         </Dialog>
     )
@@ -35,7 +40,8 @@ mapStateToProps = (state) => {
     return {
         item: state.selectedItem,
         visible: state.addToCartDialogIsVisible,
-        quantity: state.selectedItemQuantity
+        quantity: state.selectedItemQuantity || '',
+        addToCartIsEnabled: state.selectedItemQuantity > 0
     }
 }
 

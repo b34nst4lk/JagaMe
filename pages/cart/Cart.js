@@ -11,9 +11,7 @@ function Cart(props) {
     return (
         <View style={{flex: 1}}>
             <Appbar>
-                <Appbar.Content 
-                    title="Cart"
-                />
+                <Appbar.Content title="Cart" />
             </Appbar>
             <Portal>
                 <SubmitDialog />
@@ -28,10 +26,10 @@ function Cart(props) {
                             onPress={null}
                         >
                             <TextInput 
-                                placeholder='Quantity' 
+                                placeholder='Quantity must be more than 0' 
                                 keyboardType="number-pad"
                                 value={item.quantity.toString()}
-                                onChangeText={(text) => props.onUpdateQuantity(item.item.id, parseInt(text) || 0)}
+                                onChangeText={(text) => props.onUpdateQuantity(item.item.id, text)}
                             />
                             <Card.Actions style={{justifyContent: 'flex-end'}}>
                                 <Button onPress={() => props.removeFromCart(item.item.id)}>Delete</Button>
@@ -41,9 +39,7 @@ function Cart(props) {
                 }
             />
             <Appbar>
-                <Appbar.Content 
-                    title={'Total Price: $' + props.totalPrice}
-                />
+                <Appbar.Content title={'Total Price: $' + props.totalPrice} />
                 <Button 
                     onPress={() => props.showDialog()}
                     disabled={!props.submitIsEnabled}
@@ -85,7 +81,7 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: a.UPDATE_ITEM_QUANTITY,
                 id: itemId,
-                quantity: quantity
+                quantity: parseInt(quantity) || '',
             })
         },
         showDialog: () => {
