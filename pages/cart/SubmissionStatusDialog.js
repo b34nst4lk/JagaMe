@@ -40,18 +40,12 @@ function SubmissionTitle(props) {
 }
 
 function SubmissionMessage(props) {
-    let message = ''
-    switch (props.status) {
-        case 'WAITING':
-            message = 'Your submission is being processed.'
-            break 
-        case 'SUCCESS':
-            message = 'Your submission has been completed'
-            break
-        case 'FAILED':
-            message = 'Your submission has failed.'
-            break
-    }
+    let message = switchCase(
+        props.status,
+        'Your submission is being processed.',
+        'Your submission has been completed',
+        'Your submission has failed.'
+    )
 
     return (
         <Dialog.Content style={{flexDirection: 'row'}}>
@@ -62,28 +56,28 @@ function SubmissionMessage(props) {
 }
 
 function SubmissionButtons(props) {
-    buttons = null
     okButton = <Button key='ok' onPress={() => props.dismissDialog()}>Ok</Button>
     retryButton = <Button key='retry' onPress={() => props.retry(props.cart, props.patientId)}>Retry</Button>
     cancelButton = <Button key='cancel' onPress={() => props.dismissDialog()}>Cancel</Button>
 
-    switch (props.status) {
-    case 'WAITING':
-        buttons = null
-        break
-    case 'SUCCESS':
-        buttons = okButton
-        break
-    case 'FAILED':
-        buttons = [cancelButton, retryButton]
-        break
-    }
+    buttons = switchCase(props.status, null, okButton, [cancelButton, retryButton])
 
     return (
         <Dialog.Actions>
             {buttons}
         </Dialog.Actions>
     )
+}
+
+function switchCase(status, ifWaiting, ifSuccess, ifFailed) {
+    switch (status) {
+        case 'WAITING':
+            return ifWaiting
+        case 'SUCCESS':
+            return ifSuccess
+        case 'FAILURE':
+            return ifFailed
+    }
 }
 
 const mapStateToProps = (state) => {
