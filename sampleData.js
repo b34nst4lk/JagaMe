@@ -2259,10 +2259,6 @@ let data =
   }
 ]
 
-regex = /(<([^>]+)>)/ig
-for (var item of data) {
-    item.description = item.description.replace(regex, '')
-    item.short_description = item.short_description.replace(regex, '')
-}
+
 
 export const sampleData = data

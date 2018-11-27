@@ -1,6 +1,12 @@
 // Catalog actions
+/// Search
+export const GET_SEARCH_RESULTS = 'Sends search query to product endpoint'
+export const SEARCH_RESULTS_RECEIVED = 'Successfully fetching of search results'
+export const SEARCH_FAILED = 'Failed to fetch search results'
 export const INSERT_SEARCH_RESULTS = 'Inserts search results'
 export const CLEAR_SEARCH_RESULTS = 'Clears search results'
+
+/// Add to cart
 export const SHOW_ADD_TO_CART_DIALOG = 'Shows add to cart dialog'
 export const UPDATE_DIALOG_QUANTITY = 'Update quantity text field for selected item in dialog'
 export const DISMISS_ADD_TO_CART_DIALOG = 'Dismisses the add to cart dialog'

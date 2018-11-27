@@ -24,7 +24,7 @@ export function TextInputWithIcon(props) {
                     <Text>{props.draft}</Text>
                 </TextInput>
                 <IconButton
-                    onPress={props.sendQuery}
+                    onPress={props.onPress}
                     icon={props.icon}
                 />
             </View>
