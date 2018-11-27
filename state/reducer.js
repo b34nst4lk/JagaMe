@@ -1,10 +1,4 @@
 import * as a from './action'
-import { sampleData } from '../sampleData'
-
-searchResults = []
-for (var item of sampleData) {
-    searchResults.push(item.id)
-}
 
 function removeHtmlTagsFromDescription(data) {
     regex = /(<([^>]+)>)/ig
@@ -28,10 +22,13 @@ initialState = {
     submitButtonIsEnabled: false,
     submitDialogButtonIsEnabled: false,
     patientId: '',
+    awaitSubmissionDialogIsVisible: false,
+    submissionStatus: 'NONE',
 }
 
 export const reducer = (state=initialState, action) => {
     newState = Object.assign({}, state)
+    console.log(newState)
     switch (action.type) {
         case a.INSERT_SEARCH_RESULTS:
             return newState
@@ -42,15 +39,16 @@ export const reducer = (state=initialState, action) => {
                 newState.products[item.id] = item
             }
             newState.searchResults = searchResultData.map(item => item.id)
-            console.log(newState)
             return newState
 
         case a.CLEAR_SEARCH_RESULTS:
+            newState.searchResults = []
             return newState
 
         case a.SHOW_ADD_TO_CART_DIALOG:
             newState.addToCartDialogIsVisible = true
             newState.selectedItem = action.selectedItem
+            newState.selectedItemQuantity = 1
             return newState
 
         case a.UPDATE_DIALOG_QUANTITY:
@@ -59,14 +57,10 @@ export const reducer = (state=initialState, action) => {
 
         case a.DISMISS_ADD_TO_CART_DIALOG:
             newState.addToCartDialogIsVisible = false
-            newState.selectedItem = null
-            newState.selectedItemQuantity = 1
             return newState
 
         case a.ADD_TO_CART:
             newState.cart.set(action.item.id, {quantity: action.quantity, price: action.price, item: action.item})
-            newState.selectedItem = null
-            newState.selectedItemQuantity = 1
             newState.addToCartDialogIsVisible = false
             newState.submitButtonIsEnabled = true
             return newState
@@ -104,6 +98,26 @@ export const reducer = (state=initialState, action) => {
         case a.REMOVE_FROM_CART:
             newState.cart.delete(action.id)
             if (newState.cart.size === 0) newState.submitButtonIsEnabled = false
+            return newState
+
+        case a.SUBMIT_CART:
+            newState.submitDialogIsVisible = false
+            newState.awaitSubmissionDialogIsVisible = true
+            newState.submissionStatus = 'WAITING'
+            return newState
+
+        case a.CART_SUBMITTED:
+            newState.submissionStatus = 'SUCCESS'
+            newState.cart = new Map()
+            newState.patientId = ''
+            return newState
+
+        case a.CART_NOT_SUBMITTED:
+            newState.submissionStatus = 'FAILED'
+            return newState
+
+        case a.DISMISS_SUBMISSION_STATUS:
+            newState.awaitSubmissionDialogIsVisible = false
             return newState
 
         default:

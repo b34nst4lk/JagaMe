@@ -21,7 +21,7 @@ function SubmitDialog(props) {
             <Dialog.Actions>            
                 <Button onPress={() => props.onDismiss()}>Cancel</Button>
                 <Button 
-                    onPress={() => {}} 
+                    onPress={() => props.onSubmit(props.cart, props.patientId)} 
                     disabled={!props.submitIsEnabled}
                 >
                     Submit
@@ -33,9 +33,10 @@ function SubmitDialog(props) {
 
 const mapStateToProps = (state) => {
     return {
-    isVisible: state.submitDialogIsVisible,
+        isVisible: state.submitDialogIsVisible,
         patientId: state.patientId,
-        submitIsEnabled: state.submitDialogButtonIsEnabled
+        submitIsEnabled: state.submitDialogButtonIsEnabled,
+        cart: state.cart
     }
 }
 
@@ -50,6 +51,13 @@ const mapDispatchToProps = (dispatch) => {
         onPatientIdChange: (patientId) => {
             dispatch({
                 type: a.UPDATE_PATIENT_ID,
+                patientId: patientId
+            })
+        },
+        onSubmit: (cart, patientId) => {
+            dispatch({
+                type:a.SUBMIT_CART,
+                cart: cart,
                 patientId: patientId
             })
         }

@@ -9,6 +9,7 @@ import AddToCartDialog from './AddToCartDialog'
 
 import * as a from '../../state/action'
 import { fetchSearchResults } from '../../state/saga'
+import SubmissionStatusDialog from '../cart/SubmissionStatusDialog';
 
 class Catalog extends Component {
     componentDidMount() {
@@ -24,6 +25,7 @@ class Catalog extends Component {
                 </Appbar.Header>
                 <Portal>
                     <AddToCartDialog />
+                    <SubmissionStatusDialog />
                 </Portal>
                 <TextInputWithIcon
                     placeholder="E.g. Wheelchairs"
