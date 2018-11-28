@@ -55,9 +55,16 @@ const mapDispatchToProps = (dispatch) => {
             })
         },
         onSubmit: (cart, patientId) => {
+            simplifiedCart = []
+            cart.forEach(cartItem => simplifiedCart.push({
+                price: cartItem.price,
+                quantity: cartItem.quantity,
+                itemId: cartItem.item.id
+            }))
+            console.log(simplifiedCart)
             dispatch({
-                type:a.SUBMIT_CART,
-                cart: cart,
+                type: a.SUBMIT_CART,
+                cart: simplifiedCart,
                 patientId: patientId
             })
         }
