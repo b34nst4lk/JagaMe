@@ -8,7 +8,6 @@ import { ProductCard } from '../ProductCard'
 import AddToCartDialog from './AddToCartDialog'
 
 import * as a from '../../state/action'
-import { fetchSearchResults } from '../../state/saga'
 import SubmissionStatusDialog from '../cart/SubmissionStatusDialog';
 
 class Catalog extends Component {

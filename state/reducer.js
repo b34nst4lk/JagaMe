@@ -28,7 +28,6 @@ initialState = {
 
 export const reducer = (state=initialState, action) => {
     newState = Object.assign({}, state)
-    console.log(newState)
     switch (action.type) {
         case a.INSERT_SEARCH_RESULTS:
             return newState

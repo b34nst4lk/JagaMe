@@ -18,19 +18,24 @@ function SubmissionStatusDialog(props) {
     )
 }
 
-function SubmissionTitle(props) {
-    title = ''
-    switch (props.status) {
+function switchCase(status, ifWaiting, ifSuccess, ifFailed) {
+    switch (status) {
         case 'WAITING':
-            title = 'Please wait...'
-            break
+            return ifWaiting
         case 'SUCCESS':
-            title = 'Done!'
-            break
-        case 'FAILED':
-            title = 'Sorry!'
-            break
+            return ifSuccess
+        case 'FAILURE':
+            return ifFailed
     }
+}
+
+function SubmissionTitle(props) {
+    let title = switchCase(
+        props.status,
+        'Please wait...',
+        'Done!',
+        'Sorry!'
+    )
 
     return (
         <Dialog.Title>
@@ -67,17 +72,6 @@ function SubmissionButtons(props) {
             {buttons}
         </Dialog.Actions>
     )
-}
-
-function switchCase(status, ifWaiting, ifSuccess, ifFailed) {
-    switch (status) {
-        case 'WAITING':
-            return ifWaiting
-        case 'SUCCESS':
-            return ifSuccess
-        case 'FAILURE':
-            return ifFailed
-    }
 }
 
 const mapStateToProps = (state) => {
