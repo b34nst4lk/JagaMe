@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { View, FlatList } from 'react-native'
-import { Appbar, Paragraph, Portal } from 'react-native-paper'
+import { Appbar, Paragraph, Portal, Text } from 'react-native-paper'
 import { connect } from 'react-redux'
 
-import { TextInputWithIcon } from './SearchInput'
+import SearchInput from './SearchInput'
 import { ProductCard } from '../ProductCard'
 import AddToCartDialog from './AddToCartDialog'
 
@@ -20,17 +20,12 @@ class Catalog extends Component {
             <View style={{flex: 1}}>
                 <Appbar.Header>
                     <Appbar.Content title="Catalog" />
-                    <Appbar.Action icon="filter-list" />
                 </Appbar.Header>
                 <Portal>
                     <AddToCartDialog />
                     <SubmissionStatusDialog />
                 </Portal>
-                <TextInputWithIcon
-                    placeholder="E.g. Wheelchairs"
-                    icon="search"
-                    onPress={() => this.props.fetchSearchResults()}
-                />
+                <SearchInput />
                 <FlatList 
                     data={this.props.searchResults}
                     keyExtractor={(item, index) => item.id.toString()}
@@ -42,7 +37,12 @@ class Catalog extends Component {
                             <Paragraph>{item.short_description}</Paragraph>
                         </ProductCard>
                     }
-                />
+                    onEndReached={() => 
+                        !this.props.reachedEnd 
+                        ?this.props.fetchSearchResults(this.props.searchText, this.props.page + 1) 
+                        : {}
+                    }
+                /> 
             </View>
         ) 
     }
@@ -52,7 +52,10 @@ const mapStateToProps = (state) => {
     return {
         searchResults: state.searchResults.map(itemId => state.products[itemId]),
         dialogIsVisible: state.addToCartDialogIsVisible,
-        selectedItem: state.selectedItem
+        selectedItem: state.selectedItem,
+        searchText: state.searchText,
+        page: state.page,
+        reachedEnd: state.reachedEnd,
     }
 }
 
@@ -67,8 +70,10 @@ const mapDispatchToProps = (dispatch) => {
         hideDialog: () => dispatch({
             type: a.DISMISS_ADD_TO_CART_DIALOG
         }),
-        fetchSearchResults: () => dispatch({
-            type: a.GET_SEARCH_RESULTS
+        fetchSearchResults: (searchText, page=1) => dispatch({
+            type: a.GET_SEARCH_RESULTS,
+            searchText: searchText,
+            page: page,
         })
     }
 }

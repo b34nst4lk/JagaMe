@@ -1,7 +1,7 @@
 import * as a from './action'
 
 function removeHtmlTagsFromDescription(data) {
-    regex = /(<([^>]+)>)/ig
+    regex = /(<([^>]+)>|&nbsp;)/ig
     for (var item of data) {
         item.description = item.description.replace(regex, '')
         item.short_description = item.short_description.replace(regex, '')
@@ -13,7 +13,9 @@ function removeHtmlTagsFromDescription(data) {
 
 initialState = {
     products: new Map(), // map of all queried items, with id as key
+    searchText: '',
     searchResults: [], // list of item ids 
+    reachedEnd: false,
     addToCartDialogIsVisible: false,
     selectedItem: null,
     selectedItemQuantity: 1,
@@ -29,15 +31,30 @@ initialState = {
 export const reducer = (state=initialState, action) => {
     newState = Object.assign({}, state)
     switch (action.type) {
-        case a.INSERT_SEARCH_RESULTS:
+        case a.UPDATE_SEARCH_TEXT:
+            newState.searchText = action.searchText
             return newState
 
         case a.SEARCH_RESULTS_RECEIVED:
             searchResultData = removeHtmlTagsFromDescription(action.data)
+            if (searchResultData.length === 0) {
+                newState.reachedEnd = true
+            } else {
+                newState.reachedEnd = false
+            }
             for (const item of searchResultData) {
                 newState.products[item.id] = item
             }
-            newState.searchResults = searchResultData.map(item => item.id)
+
+            newState.page = action.page || 1
+            if (action.page === 1) {
+                newState.searchResults = []
+            }
+
+            searchResultData.map(item => newState.searchResults.push(item.id))
+            return newState
+
+        case a.SEARCH_FAILED:
             return newState
 
         case a.CLEAR_SEARCH_RESULTS:

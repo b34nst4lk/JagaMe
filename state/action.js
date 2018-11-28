@@ -1,9 +1,10 @@
 // Catalog actions
 /// Search
+export const UPDATE_SEARCH_TEXT = 'Updates the search text when onChangeText in the search textinput'
 export const GET_SEARCH_RESULTS = 'Sends search query to product endpoint'
 export const SEARCH_RESULTS_RECEIVED = 'Successfully fetching of search results'
 export const SEARCH_FAILED = 'Failed to fetch search results'
-export const INSERT_SEARCH_RESULTS = 'Inserts search results'
+export const DO_NEW_SEARCH = 'Inserts search results'
 export const CLEAR_SEARCH_RESULTS = 'Clears search results'
 
 /// Add to cart

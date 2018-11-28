@@ -33,9 +33,15 @@ function getSearchResults(queryObj={page: 1, per_page: 10}) {
 }
 
 function* fetchSearchResults(action) {
+    queryObj = {
+        search: action.searchText || '',
+        page: action.page
+    }
+
     try {
-        const data = yield call(getSearchResults)
-        yield put({type: a.SEARCH_RESULTS_RECEIVED, data})
+        const data = yield call(getSearchResults, queryObj)
+        if (action.page === 1) yield put({type: a.CLEAR_SEARCH_RESULTS})
+        yield put({...action, type: a.SEARCH_RESULTS_RECEIVED, data})
     } catch (error) {
         yield put({type: a.SEARCH_FAILED})
     }
