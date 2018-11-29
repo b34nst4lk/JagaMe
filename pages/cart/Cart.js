@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, Keyboard, View } from 'react-native'
 import { Appbar, Button, Card, TextInput, Portal } from 'react-native-paper'
 import { connect } from 'react-redux'
 
@@ -41,7 +41,10 @@ function Cart(props) {
             <Appbar>
                 <Appbar.Content title={'Total Price: $' + props.totalPrice} />
                 <Button 
-                    onPress={() => props.showDialog()}
+                    onPress={() => {
+                        Keyboard.dismiss()
+                        props.showDialog()
+                    }}
                     disabled={!props.submitIsEnabled}
                 >
                     Submit
