@@ -1,6 +1,6 @@
 # Jaga-Me Tech Challenge
 
-This project is for the Tech Assessment Challenge for my job application to [Jaga-Me](https://www.jaga-me.com/). Details on the design and progress can be found [here](./TECH_CHALLENGE.md)
+This project is for the Tech Assessment Challenge for my job application to [Jaga-Me](https://www.jaga-me.com/). The initial proposal and progress updates can be found [here](./TECH_CHALLENGE.md) and the design rationale and areas of improvements [here](./TECH_DESIGN_DOC.md)
 
 ## Getting Started
 
