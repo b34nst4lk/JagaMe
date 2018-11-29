@@ -40,7 +40,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-// TODO: Implememnt Submit
 const mapDispatchToProps = (dispatch) => {
     return {
         onDismiss: () => {

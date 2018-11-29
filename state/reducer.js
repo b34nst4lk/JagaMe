@@ -14,6 +14,7 @@ function removeHtmlTagsFromDescription(data) {
 initialState = {
     products: new Map(), // map of all queried items, with id as key
     searchText: '',
+    isLoadingSearchResults: false,
     searchResults: [], // list of item ids 
     reachedEnd: false,
     addToCartDialogIsVisible: false,
@@ -35,7 +36,13 @@ export const reducer = (state=initialState, action) => {
             newState.searchText = action.searchText
             return newState
 
+        case a.GET_SEARCH_RESULTS:
+            newState.isLoadingSearchResults = true
+            return newState
+
         case a.SEARCH_RESULTS_RECEIVED:
+            newState.isLoadingSearchResults = false
+
             searchResultData = removeHtmlTagsFromDescription(action.data)
             if (searchResultData.length === 0) {
                 newState.reachedEnd = true
@@ -55,6 +62,7 @@ export const reducer = (state=initialState, action) => {
             return newState
 
         case a.SEARCH_FAILED:
+            newState.isLoadingSearchResults = false
             return newState
 
         case a.CLEAR_SEARCH_RESULTS:

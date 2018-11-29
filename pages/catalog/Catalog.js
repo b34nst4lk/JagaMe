@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, FlatList } from 'react-native'
-import { Appbar, Paragraph, Portal, Text } from 'react-native-paper'
+import { ActivityIndicator, FlatList, View } from 'react-native'
+import { Appbar, Paragraph, Portal, Subheading } from 'react-native-paper'
 import { connect } from 'react-redux'
 
 import SearchInput from './SearchInput'
@@ -26,26 +26,52 @@ class Catalog extends Component {
                     <SubmissionStatusDialog />
                 </Portal>
                 <SearchInput />
-                <FlatList 
-                    data={this.props.searchResults}
-                    keyExtractor={(item, index) => item.id.toString()}
-                    renderItem={({item}) => 
-                        <ProductCard 
-                            item={item}
-                            onPress={() => this.props.showDialog(item)}
-                        >
-                            <Paragraph>{item.short_description}</Paragraph>
-                        </ProductCard>
-                    }
-                    onEndReached={() => 
-                        !this.props.reachedEnd 
-                        ?this.props.fetchSearchResults(this.props.searchText, this.props.page + 1) 
-                        : {}
-                    }
-                /> 
-            </View>
+                <SearchResults {...this.props} />
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <SearchStatus {...this.props}/>
+                </View>
+             </View>
         ) 
     }
+}
+
+function SearchResults(props) {
+    if (props.searchResults.length > 0)
+        return (
+            <FlatList 
+                data={props.searchResults}
+                keyExtractor={(item, index) => item.id.toString()}
+                renderItem={({item}) => 
+                    <ProductCard 
+                        item={item}
+                        onPress={() => props.showDialog(item)}
+                    >
+                        <Paragraph>{item.short_description}</Paragraph>
+                    </ProductCard>
+                }
+                onEndReached={() => 
+                    !props.reachedEnd 
+                    ?props.fetchSearchResults(props.searchText, props.page + 1) 
+                    : {}
+                }
+            /> 
+        ) 
+    else
+        return null
+}
+
+function SearchStatus(props) {
+    if (props.loading)
+        return <ActivityIndicator size='large' style={{padding: 8}}/>
+
+    else if (props.reachedEnd && props.searchResults.length === 0) 
+        return <Subheading style={{padding: 8}}>No results found</Subheading>
+
+    else if (props.reachedEnd && props.searchResults.length > 0)
+        return <Subheading style={{padding: 8}}>No more results</Subheading>
+
+    else 
+        return null
 }
 
 const mapStateToProps = (state) => {
@@ -56,6 +82,7 @@ const mapStateToProps = (state) => {
         searchText: state.searchText,
         page: state.page,
         reachedEnd: state.reachedEnd,
+        loading: state.isLoadingSearchResults,
     }
 }
 
