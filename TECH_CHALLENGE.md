@@ -1,5 +1,23 @@
 # Jaga-Me Tech Challenge
 
+## 29-Nov-18
+
+### Summary
+
+Submission to webhook and search functions have been implemented in Redux Saga. 
+
+Additional UI elements added in Catalog page to provide visual feedback on the search progress and results.
+
+Added additional dialog in the submission of cart to provide additional visual feedback on the submission status.
+
+### Outstanding tasks
+
+As of the deadline, these are the remaining tasks that couldn't be completed.
+
+- ~~(2) create filters drawer in catalog screen~~ This task is removed because I haven't been able to find ways to meaningfully filter the search results. 
+- ~~(3) implement search calls based on filter to endpoint using Redux Saga~~ See previous point
+- (4) update theme to match Jaga-Me branding
+
 ## 26-Nov-18
 
 ### Summary
