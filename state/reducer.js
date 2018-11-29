@@ -134,6 +134,7 @@ export const reducer = (state=initialState, action) => {
             newState.submissionStatus = 'SUCCESS'
             newState.cart = new Map()
             newState.patientId = ''
+            newState.submitButtonIsEnabled = false
             return newState
 
         case a.CART_NOT_SUBMITTED:
